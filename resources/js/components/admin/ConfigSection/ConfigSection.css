@@ -1,0 +1,133 @@
+.conf-step {
+  position: relative;
+  background-color: rgba(234, 233, 235, 0.95);
+}
+
+.conf-step::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+  display: block;
+  width: 2px;
+  background-color: #BC95D6;
+}
+
+.conf-step__header,
+.conf-step__wrapper {
+  padding: 35px 42px 35px 104px;
+}
+
+.conf-step__header_opened+.conf-step__wrapper {
+  display: block;
+}
+
+.conf-step__header_closed+.conf-step__wrapper {
+  display: none;
+}
+
+.conf-step__wrapper__save-status {
+  padding-top: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #008000;
+}
+
+.conf-step__header_closed::after {
+  transform: rotate(-90deg);
+}
+
+.conf-step__header {
+  position: relative;
+  box-sizing: border-box;
+  background-color: #63536C;
+  color: #FFFFFF;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
+.conf-step__header::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+  display: block;
+  width: 2px;
+  background-color: #BC95D6;
+}
+
+.conf-step__header::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 8px);
+  display: block;
+  right: 42px;
+  width: 24px;
+  height: 16px;
+  background-image: url("/storage/admin/.png");
+  background-size: 24px 16px;
+}
+
+.conf-step__header:hover,
+.conf-step__header:focus {
+  background-color: #89639e;
+}
+
+.conf-step__header .conf-step__title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  counter-increment: num;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
+.conf-step__header .conf-step__title::before {
+  content: counter(num);
+  position: absolute;
+  display: block;
+  left: 62px;
+  top: 50%;
+  margin-left: -22px;
+  margin-top: -22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 5px solid #BC95D6;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  color: #63536C;
+  font-weight: 900;
+  font-size: 2.8rem;
+  text-align: center;
+  letter-spacing: normal;
+}
+
+.conf-step__header:hover .conf-step__title {
+  letter-spacing: 2px;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
+.conf-step__header:hover .conf-step__title::before {
+  letter-spacing: normal;
+}
+
+.conf-step:first-of-type .conf-step__header::before {
+  top: 50%;
+}
+
+.conf-step:last-of-type .conf-step__header::before {
+  bottom: 50%;
+}
+
+.conf-step:last-of-type::before {
+  display: none;
+}

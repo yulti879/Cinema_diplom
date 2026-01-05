@@ -1,0 +1,100 @@
+.page-nav {
+  position: sticky;
+  top: 2px;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  color: #000000;
+  z-index: 10;
+}
+
+.page-nav .page-nav__day {
+  flex-basis: calc(100% / 8);
+  font-size: 1.2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  text-decoration: none;
+  color: #000000;
+}
+
+.page-nav .page-nav__day+.page-nav__day {
+  margin-left: 1px;
+}
+
+.page-nav .page-nav__day .page-nav__day-week::after {
+  content: ',';
+}
+
+.page-nav .page-nav__day .page-nav__day-number::before {
+  content: ' ';
+}
+
+.page-nav .page-nav__day .page-nav__day-week,
+.page-nav .page-nav__day .page-nav__day-number {
+  display: block;
+}
+
+/* Убираем запятые и пробелы у кнопок навигации */
+.page-nav .page-nav__day_prev .page-nav__day-week::after,
+.page-nav .page-nav__day_next .page-nav__day-week::after,
+.page-nav .page-nav__day_prev .page-nav__day-number::before,
+.page-nav .page-nav__day_next .page-nav__day-number::before {
+  content: '';
+}
+
+.page-nav .page-nav__day_chosen {
+  flex-grow: 1;
+  background-color: #FFFFFF;
+  font-weight: 700;
+  transform: scale(1.1);
+}
+
+.page-nav .page-nav__day_weekend {
+  color: #DE2121;
+}
+
+.page-nav .page-nav__day_prev,
+.page-nav .page-nav__day_next {
+  text-align: center;
+  flex-basis: calc(100% / 12);
+}
+
+.page-nav .page-nav__day_prev::before {
+  content: '<';
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 2.4rem;
+}
+
+.page-nav .page-nav__day_next::before {
+  content: '>';
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 2.4rem;
+}
+
+.page-nav .page-nav__day_today .page-nav__day-week::before {
+  content: 'Сегодня';
+  display: block;
+}
+
+.page-nav .page-nav__day_today .page-nav__day-week,
+.page-nav .page-nav__day_today .page-nav__day-number {
+  display: inline;
+}
+
+@media screen and (min-width: 479px) {
+  .page-nav .page-nav__day {
+    padding: 1rem 2rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  nav {
+    width: 990px;
+    margin: auto;
+  }
+}

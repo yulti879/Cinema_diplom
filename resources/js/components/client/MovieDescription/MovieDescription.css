@@ -1,0 +1,21 @@
+.movie__description {
+  flex-grow: 1;
+  padding-left: 1.5rem;  
+}
+.movie__title {
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+.movie__synopsis {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+}
+.movie__data {
+  font-size: 1.4rem;
+  font-weight: 300;
+  margin-top: 1rem;
+}
+
+.movie__data-duration {
+  margin-right: 4px;
+}

@@ -1,0 +1,264 @@
+.accept-button {
+  display: block;
+  margin: 3rem auto 0;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.24), 0px 0px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  border: none;
+  padding: 12px 57px;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4rem;
+  background-color: #16A6AF;
+  color: #FFFFFF;
+}
+
+.buying {
+  background-color: rgba(241, 235, 230, 0.95);
+  padding-bottom: 3rem;
+}
+
+.buying__info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+}
+
+.buying__info-description {
+  padding-right: 1.5rem;
+}
+
+.buying__info-title,
+.buying__info .buying__info-hall {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.buying__info-date,
+.buying__info-start {
+  font-size: 1.4rem;
+  font-weight: 300;
+  margin: 0.7rem 0;
+}
+
+.buying__info-hint {
+  position: relative;
+  font-weight: 300;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.buying__info-hint p {
+  position: relative;
+  width: 10rem;
+}
+
+.buying__info-hint p::before {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: calc(50% - 1.6rem);
+  display: block;
+  width: 2.4rem;
+  height: 3.2rem;
+  background-image: url(storage/client/hint.png);
+  background-size: 2.4rem 3.2rem;
+}
+
+.buying-scheme {
+  text-align: center;
+  background-color: #171D24;
+  padding: 1.5rem 3rem 1.5rem;
+}
+
+.buying-scheme__wrapper {
+  font-size: 0;
+  display: inline-block;
+  background-image: url(storage/client/screen.png);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding-top: 3rem;
+}
+
+.buying-scheme__wrapper::before {
+  content: '';
+}
+
+.buying-scheme__row+.buying-scheme__row {
+  margin-top: 4px;
+}
+
+.buying-scheme__chair {
+  display: inline-block;
+  vertical-align: middle;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #525252;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.buying-scheme__chair:not(:first-of-type) {
+  margin-left: 4px;
+}
+
+.buying-scheme__chair_disabled {
+  opacity: 0;
+}
+
+.buying-scheme__chair_standard {
+  background-color: #FFFFFF;
+}
+
+.buying-scheme__chair_taken {
+  background-color: transparent;
+}
+
+.buying-scheme__chair_vip {
+  background-color: #F9953A;
+}
+
+.buying-scheme__chair_selected {
+  background-color: #25C4CE;
+  box-shadow: 0px 0px 4px #16A6AF;
+  transform: scale(1.2);
+}
+
+.buying-scheme__legend {
+  padding-top: 3rem;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #FFFFFF;
+  display: flex;
+  flex-wrap: nowrap;
+  text-align: left;
+}
+
+.buying-scheme__legend .col {
+  max-width: 25rem;
+}
+
+.buying-scheme__legend .col:first-of-type {
+  padding-right: 1.5rem;
+  margin-left: auto;
+}
+
+.buying-scheme__legend .col:last-of-type {
+  margin-right: auto;
+}
+
+.buying-scheme__legend .buying-scheme__legend-price+.buying-scheme__legend-price {
+  margin-top: 1rem;
+}
+
+.loading-info,
+.booked-seats-info {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.loading-info {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.booked-seats-info {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.scheme-loading {
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+/* Стили для увеличенной схемы */
+.buying-scheme {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.buying-scheme--zoomed {
+  transform: scale(1.3);
+  transform-origin: center top;
+  z-index: 10;
+}
+
+.buying-scheme--zoomed .buying-scheme__wrapper {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Индикатор состояния зума */
+.buying-scheme__zoom-hint {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.buying-scheme--zoomed .buying-scheme__zoom-hint {
+  display: none;
+}
+
+.buying-scheme--zoomed .buying-scheme__chair {
+  margin: 2px;
+}
+
+.buying-scheme--zoomed .buying-scheme__row-number {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .buying {
+    border-radius: 2px;
+  }
+
+  .buying__info-hint {
+    display: none;
+  }
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+  .buying-scheme--zoomed {
+    transform: scale(1.5);
+  }
+
+  .buying-scheme--zoomed .buying-scheme__wrapper {
+    max-height: 60vh;
+  }
+}

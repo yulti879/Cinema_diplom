@@ -1,0 +1,19 @@
+.conf-step__label,
+.login__label {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #848484;
+}
+
+.conf-step__label-fullsize {
+  width: 100%;
+  margin-bottom: 0.8rem;
+}
+
+.conf-step__label-fullsize :last-of-type {
+  margin-bottom: 0;
+}
+
+.conf-step__label-fullsize .conf-step__input {
+  width: 100%;
+}

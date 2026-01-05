@@ -1,0 +1,152 @@
+.conf-step__movies {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.conf-step__movies .conf-step__movie {
+  position: relative;
+  width: calc((100% - 30px) / 3);
+  min-height: 52px;
+  padding: 8px 8px 8px 48px;
+  background: #FFEB85;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(3n + 2) {
+  margin: 0 15px;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(n + 4) {
+  margin-top: 15px;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(1) {
+  background-color: #caff85;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(2) {
+  background-color: #85ff89;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(3) {
+  background-color: #85ffd3;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(4) {
+  background-color: #85e2ff;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(5) {
+  background-color: #8599ff;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(6) {
+  background-color: #ba85ff;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(7) {
+  background-color: #ff85fb;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(8) {
+  background-color: #ff85b1;
+}
+
+.conf-step__movies .conf-step__movie:nth-of-type(9) {
+  background-color: #ffa285;
+}
+
+.conf-step__movies .conf-step__movie-title {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+.conf-step__movies .conf-step__movie-duration {
+  font-size: 1.4rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.conf-step__movie>a {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.conf-step__movie-delete {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.conf-step__seances-hall {
+  position: relative;
+  margin: 35px;
+}
+
+.conf-step__seances-title {
+  font-weight: 500;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+
+.conf-step__seances-timeline {
+  position: relative;
+  outline: 1px solid #848484;
+  padding: 10px 0;
+  height: 40px;
+  box-sizing: content-box;
+  width: calc(1440px * 0.5);
+}
+
+.conf-step__seances-movie {
+  position: absolute;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  padding: 10px 2px 10px 10px;
+}
+
+.conf-step__seances-movie .conf-step__seances-movie-title {
+  overflow: hidden;
+  line-height: 10px;
+  height: 100%;
+}
+
+.conf-step__seances-movie .conf-step__seances-movie-start {
+  position: absolute;
+  bottom: -33px;
+  left: -14px;
+  color: #848484;
+  font-size: 1.2rem;
+}
+
+.conf-step__seances-movie::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 1px;
+  height: 5px;
+  bottom: -17px;
+  left: 0;
+  background-color: #848484;
+}
+
+.conf-step__seances-date {
+  margin: 30px 0 10px 0;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.conf-step__seances-date-title {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  text-transform: uppercase;
+}

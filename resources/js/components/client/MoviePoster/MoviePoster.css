@@ -1,0 +1,24 @@
+.movie__poster {
+  position: relative;
+  width: 12.5rem;
+  height: 17.5rem;
+  /*    left: 1.5rem;
+      top: -1.5rem;*/
+}
+.movie__poster .movie__poster-image {
+  position: relative;
+  top: -3rem;
+  width: 12.5rem;
+  height: 17.5rem;
+}
+.movie__poster::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -0.7rem;
+  top: -3rem;
+  border: 1.5rem solid transparent;
+  border-bottom: 0 solid transparent;
+  border-right: 0 solid transparent;
+  border-left: 0.7rem solid #772720;
+}

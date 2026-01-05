@@ -1,0 +1,7 @@
+.conf-step__movies .conf-step__movie-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 50px;
+}

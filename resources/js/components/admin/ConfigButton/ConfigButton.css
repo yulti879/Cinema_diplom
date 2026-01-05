@@ -1,0 +1,94 @@
+/* Базовый стиль кнопки */
+.conf-step__button {
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.24), 0px 0px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  border: none;
+  background-color: #FFFFFF;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4rem;
+  transition-property: background-color;
+  transition-duration: .5s;
+  transition-timing-function: ease;
+  cursor: pointer;
+}
+
+.conf-step__button:hover,
+.conf-step__button:focus {
+  background-color: #EEEAF1;
+  outline: none;
+}
+
+.conf-step__button:active {
+  position: relative;
+  top: 2px;
+  background-color: #63536C;
+  color: #FFFFFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+.conf-step__button:disabled {
+  background-color: #888888;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Вариант regular */
+.conf-step__button-regular {
+  color: #63536C;
+  padding: 12px 32px;
+  margin-top: 17px;
+}
+
+/* Вариант accent */
+.conf-step__button-accent {
+  color: #FFFFFF;
+  background-color: #16A6AF;
+  padding: 12px 32px;
+  margin-top: 17px;
+}
+
+.conf-step__button-accent:hover,
+.conf-step__button-accent:focus {
+  background-color: #2FC9D2;
+  outline: none;
+}
+
+.conf-step__button-accent:active {
+  background-color: #146C72;
+}
+
+.conf-step__button-accent:disabled {
+  background-color: #0a4a4f;
+}
+
+/* Вариант trash */
+.conf-step__button-trash {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  vertical-align: text-top;
+  padding: 0;
+  margin-left: 8px;
+}
+
+.conf-step__button-trash::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background-image: url("/storage/admin/trash-sprite.png");
+  background-position: 0 0;
+  background-size: 24px 12px;
+  background-repeat: no-repeat;
+}
+
+.conf-step__button-trash:active::before {
+  background-position: -12px 0;
+}
+
+.conf-step__button-trash:disabled::before {
+  opacity: 0.5;
+}
