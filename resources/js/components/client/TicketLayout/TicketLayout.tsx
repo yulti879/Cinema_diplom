@@ -1,17 +1,18 @@
+import { useState } from 'react';
 import { formatApiDate, formatApiTime } from '../../../utils/dateHelpers';
 import './TicketLayout.css';
 
 interface TicketLayoutProps {
   type: 'payment' | 'ticket';
   movieTitle: string;
-  seats: string[];             // массив строк: "Ряд 1, Место 3"
+  seats: string[];
   hall: string;
   startTime: string;
   date: string;
   cost?: number;
-  qrCodeUrl?: string;          // URL QR-кода
+  qrCodeUrl?: string;
   bookingCode?: string;
-  onGetTicket?: () => void;
+  onGetTicket?: (email?: string) => void; // теперь можем передавать email
   isButtonDisabled?: boolean;
 }
 
@@ -29,6 +30,12 @@ export const TicketLayout: React.FC<TicketLayoutProps> = ({
   isButtonDisabled = false
 }) => {
   const seatList = seats.join(', ');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onGetTicket) onGetTicket(email || undefined);
+  };
 
   return (
     <main>
@@ -44,11 +51,11 @@ export const TicketLayout: React.FC<TicketLayoutProps> = ({
             На фильм: <span className="ticket__details ticket__title">{movieTitle}</span>
           </p>
           <p className="ticket__info">
-            Дата: <span className="ticket__details ticket__date">{formatApiDate(date)}</span>
+            Дата: <span className="ticket__details ticket__date">{date}</span>
           </p>
           <p className="ticket__info">
             Начало сеанса:{' '}
-            <span className="ticket__details ticket__start">{formatApiTime(startTime)}</span>
+            <span className="ticket__details ticket__start">{startTime}</span>
           </p>
           <p className="ticket__info">
             Зал: <span className="ticket__details ticket__hall">{hall}</span>
@@ -75,26 +82,35 @@ export const TicketLayout: React.FC<TicketLayoutProps> = ({
                 className="ticket__info-qr"
                 src={qrCodeUrl}
                 alt="QR код билета"
-              />
-              <p className="ticket__qr-hint">Покажите QR-код контролёру</p>
+              />              
             </div>
           )}
 
-          {type === 'payment' ? (
-            <>
+          {type === 'payment' && (
+            <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
+              <label>
+                Введите адрес вашей электронной почты, если хотите, чтобы на неё пришёл билет:
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="example@mail.com"
+                  style={{ width: '100%', marginTop: 8 }}
+                />
+              </label>
+
               <button
+                type="submit"
                 className="accept-button"
-                onClick={onGetTicket}
                 disabled={isButtonDisabled}
+                style={{ marginTop: 12 }}
               >
                 {isButtonDisabled ? 'Обработка...' : 'Получить код бронирования'}
               </button>
-              <p className="ticket__hint">
-                После оплаты билет будет доступен в этом окне, а также придёт вам на почту.
-                Покажите QR-код нашему контролёру у входа в зал.
-              </p>
-            </>
-          ) : (
+            </form>
+          )}
+
+          {type === 'ticket' && (
             <p className="ticket__hint">
               Покажите QR-код нашему контролёру для подтверждения бронирования.
             </p>

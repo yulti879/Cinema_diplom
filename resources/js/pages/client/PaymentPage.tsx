@@ -55,7 +55,7 @@ export const PaymentPage: React.FC = () => {
     );
   }
 
-  const handleGetTicket = async () => {
+  const handleGetTicket = async (email?: string) => {
     setIsLoading(true);
     try {
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -115,19 +115,6 @@ export const PaymentPage: React.FC = () => {
         onGetTicket={handleGetTicket}
         isButtonDisabled={isLoading}
       />
-
-      <div className="email_input" style={{ marginTop: 16 }}>
-        <label>
-          Введите адрес вашей электронной почты, если хотите, чтобы на неё пришёл билет:
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="example@mail.com"
-            style={{ width: '100%', marginTop: 8 }}
-          />
-        </label>        
-      </div>
     </ClientLayout>
   );
 };

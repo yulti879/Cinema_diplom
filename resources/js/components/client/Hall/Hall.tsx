@@ -27,22 +27,26 @@ export const Hall: React.FC = () => {
       try {
         setIsLoading(true);
 
+        // получаем сеанс
         const screeningRes = await fetch(`/api/screenings/${screeningId}`);
         if (!screeningRes.ok) throw new Error('Сеанс не найден');
-
         const screeningData: Screening = await screeningRes.json();
         setScreening(screeningData);
         setBookedSeats(screeningData.bookedSeats || []);
 
+        // получаем зал
         const hallRes = await fetch(`/api/halls/${screeningData.hallId}`);
         if (!hallRes.ok) throw new Error('Зал не найден');
-
         const hallData = await hallRes.json();
+
         setHallLayout(hallData.layout);
         setSeatPrices({
           standard: hallData.standardPrice ?? 0,
           vip: hallData.vipPrice ?? 0
         });
+
+        // сохраняем имя зала в screening для удобства (не обязательно)
+        setScreening(prev => prev ? { ...prev, hall: { ...hallData } } : prev);
 
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Ошибка загрузки данных');
@@ -53,7 +57,6 @@ export const Hall: React.FC = () => {
 
     fetchData();
   }, [screeningId]);
-
 
   // Клик по месту
   const handleSeatClick = (rowIndex: number, seatIndex: number, seatType: Seat['type']) => {
@@ -95,11 +98,14 @@ export const Hall: React.FC = () => {
       alert('Выберите хотя бы одно место');
       return;
     }
+   
+    const hallName = screening.hall?.name ?? 'Зал';
 
     navigate('/payment', {
       state: {
         screeningId: screening.id,
         hallId: screening.hallId,
+        hallName,
         movieTitle: screening.movie?.title,
         date: screening.date,
         startTime: screening.startTime,
