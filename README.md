@@ -57,7 +57,7 @@ php artisan key:generate
 php artisan migrate
 
 
-Если нужно начать с чистого листа:
+Если нужно начать с чистого листа: 
 
 php artisan migrate:fresh
 
@@ -81,8 +81,11 @@ Frontend будет доступен по умолчанию на http://localho
 
 ### Создание администратора
 Для создания администратора используется встроенная команда Artisan:
+
 php artisan admin:create <email> <password>
+
 Пример:
+
 php artisan admin:create admin@cinema.ru password123
 
 Администратор сможет управлять залами, фильмами, сеансами и бронированиями через API.
