@@ -119,36 +119,22 @@ QR-код уникален для каждого бронирования
 ## API Endpoints
 ### Аутентификация
 
-Регистрация пользователя
+Администратор
+- Логин: POST /api/login
+  Body (JSON):
+  {
+    "email": "admin@example.com",
+    "password": "пароль"
+  }
+  Ответ: данные админа + роль
 
-POST /api/register
-Body: {
-  "name": "Имя",
-  "email": "email@example.com",
-  "password": "пароль",
-  "password_confirmation": "пароль"
-}
+- Логаут: POST /api/logout
+  Cookie сессии обязательно
+  Ответ: success: true
 
-
-Логин
-
-POST /api/login
-Body: {
-  "email": "email@example.com",
-  "password": "пароль"
-}
-
-
-Текущий пользователь
-
-GET /api/me
-Header: Authorization: Bearer <token>
-
-
-Логаут
-
-POST /api/logout
-Header: Authorization: Bearer <token>
+Гости
+- Не требуют регистрации или логина
+- Бронирование возможно сразу, только через email для получения QR-кода
 
 ## Фильмы
 
