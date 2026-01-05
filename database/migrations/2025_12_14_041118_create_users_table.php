@@ -1,5 +1,4 @@
 <?php
-// database/migrations/2025_12_14_041118_create_users_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role')->default('guest'); // Важно: эта колонка должна быть
+            $table->string('role')->default('guest');
             $table->rememberToken();
             $table->timestamps();
         });
