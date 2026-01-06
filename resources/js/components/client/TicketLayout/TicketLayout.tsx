@@ -82,31 +82,30 @@ export const TicketLayout: React.FC<TicketLayoutProps> = ({
                 className="ticket__info-qr"
                 src={qrCodeUrl}
                 alt="QR код билета"
-              />              
+              />
             </div>
           )}
 
           {type === 'payment' && (
-            <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
+            <form onSubmit={handleSubmit} className="email-form">
               <label>
-                Введите адрес вашей электронной почты, если хотите, чтобы на неё пришёл билет:
+                <p className="ticket__hint">Введите адрес вашей электронной почты, если хотите, чтобы на неё пришёл билет:</p>
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="example@mail.com"
-                  style={{ width: '100%', marginTop: 8 }}
+                  placeholder="example@mail.com"                  
                 />
               </label>
 
               <button
                 type="submit"
                 className="accept-button"
-                disabled={isButtonDisabled}
-                style={{ marginTop: 12 }}
+                disabled={isButtonDisabled}                
               >
                 {isButtonDisabled ? 'Обработка...' : 'Получить код бронирования'}
               </button>
+              <p className="ticket__hint">После оплаты билет будет доступен в этом окне, а также придёт вам на почту. Покажите QR-код нашему контролёру у входа в зал.</p>
             </form>
           )}
 

@@ -95,3 +95,41 @@
   width: 20rem;
   height: 20rem;
 }
+
+.email-form {
+  margin-top: 2.5rem;  
+}
+
+.email-form label {
+  display: block;
+}
+
+.email-form input[type="email"] {
+  width: 40%;
+  margin-top: 0.8rem;
+  padding: 1.2rem 1.4rem;
+
+  font-size: 1.4rem;
+  font-family: inherit;
+
+  border: 1px solid #cfc6bf;
+  border-radius: 4px;
+  background-color: #ffffff;
+
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.email-form input[type="email"]::placeholder {
+  color: #9c9c9c;
+}
+
+.email-form input[type="email"]:focus {
+  outline: none;
+  border-color: #c76f00;
+  box-shadow: 0 0 0 1px rgba(199, 111, 0, 0.3);
+}
+
+.email-form .accept-button {
+  margin-top: 1.6rem;
+}
+
