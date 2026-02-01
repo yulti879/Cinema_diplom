@@ -35,14 +35,14 @@ composer install
 
 Frontend (React + Vite):
 
-cd resources/js
 npm install
-cd ../..
 
 
 ### 3. Настройка окружения
 
-copy .env.example .env
+copy .env.example .env   # для Windows
+# или
+cp .env.example .env    # для Linux/Mac
 
 По умолчанию используется SQLite: database/database.sqlite
 
