@@ -40,9 +40,9 @@ npm install
 
 ### 3. Настройка окружения
 
-copy .env.example .env   # для Windows
-# или
-cp .env.example .env    # для Linux/Mac
+copy .env.example .env (для Windows)
+или
+cp .env.example .env (для Linux/MacOS)
 
 По умолчанию используется SQLite: database/database.sqlite
 
