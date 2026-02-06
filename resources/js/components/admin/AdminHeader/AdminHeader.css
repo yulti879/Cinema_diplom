@@ -6,6 +6,16 @@
   text-transform: uppercase;
 }
 
+.page-header__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+}
+
+.page-header__titles {
+  flex: 1;
+}
+
 .page-header__title {
   margin: 0;
   font-weight: 900;
@@ -19,16 +29,6 @@
 .page-header .page-header__subtitle {
     font-size: 1rem;
     letter-spacing: 0.46em;
-}
-
-.page-header__content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;  
-}
-
-.page-header__titles {
-  flex: 1;
 }
 
 .page-header__logout {
@@ -45,11 +45,4 @@
 .page-header__logout:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
-}
-
-@media screen and (min-width: 990px) {
-  .page-header {
-    width: 990px;
-    margin: auto;
-  }
 }

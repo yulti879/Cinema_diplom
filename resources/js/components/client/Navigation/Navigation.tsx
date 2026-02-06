@@ -1,40 +1,65 @@
+import React from 'react';
 import { useCinema } from '../../../context/CinemaContext';
-import { getMondayOfWeek, generateWeekDays, isSameDay } from '../../../utils/dateHelpers';
+import { DAYS_SHORT } from '../../../utils/dateHelpers';
 import type { Day } from '../../../types/client';
-
 import './Navigation.css';
+
 
 export const Navigation: React.FC = () => {
   const { selectedDate, setSelectedDate } = useCinema();
 
-  const days: Day[] = generateWeekDays(selectedDate);
+  // Левый край окна (показываемых 7 дней)
+  const today = new Date();
+  const [windowStartDate, setWindowStartDate] = React.useState<Date>(today);
 
-  // Проверяем, можем ли идти назад (не раньше сегодняшней недели)
-  const canGoBack = () => {
-    const today = new Date();
-    const currentMonday = getMondayOfWeek(today);
-    const selectedMonday = getMondayOfWeek(selectedDate);
-    
-    return selectedMonday.getTime() > currentMonday.getTime();
-  };
+  // Генерация массива дней для окна
+  const days: Day[] = React.useMemo(() => {
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(windowStartDate);
+      d.setDate(windowStartDate.getDate() + i);
+      const dayOfWeek = d.getDay();
+      return {
+        date: d,
+        day: DAYS_SHORT[dayOfWeek],
+        number: d.getDate(),
+        today: d.toDateString() === today.toDateString(),
+        chosen: d.toDateString() === selectedDate.toDateString(),
+        weekend: dayOfWeek === 0 || dayOfWeek === 6,
+      };
+    });
+  }, [windowStartDate, selectedDate]);
 
-  const handleChangeWeek = (offset: number) => {
-    const monday = getMondayOfWeek(selectedDate);
-    const nextMonday = new Date(monday);
-    nextMonday.setDate(monday.getDate() + offset * 7);
-    
-    // Устанавливаем на понедельник новой недели
-    setSelectedDate(nextMonday);
+  // Проверяем, можем ли двигать окно назад
+  const canGoBack = windowStartDate > today;
+
+  // Сдвиг окна на offset недель
+  const handleShiftWindow = (weeks: number) => {
+    const newStart = new Date(windowStartDate);
+    newStart.setDate(windowStartDate.getDate() + weeks * 7);
+
+    // Не уходить за today
+    if (newStart < today) {
+      setWindowStartDate(today);
+    } else {
+      setWindowStartDate(newStart);
+    }
+
+    // Если выбранный день не в новом окне, сдвигаем выбор на первый день окна
+    const windowEnd = new Date(newStart);
+    windowEnd.setDate(newStart.getDate() + 6);
+    if (selectedDate < newStart || selectedDate > windowEnd) {
+      setSelectedDate(newStart);
+    }
   };
 
   return (
     <nav className="page-nav">
-      {canGoBack() && (
+      {canGoBack && (
         <button
           className="page-nav__day page-nav__day_prev"
-          onClick={() => handleChangeWeek(-1)}
-          aria-label="Предыдущая неделя"
-          title="Предыдущая неделя"
+          onClick={() => handleShiftWindow(-1)}
+          aria-label="Предыдущие 7 дней"
+          title="Предыдущие 7 дней"
         />
       )}
 
@@ -61,9 +86,9 @@ export const Navigation: React.FC = () => {
 
       <button
         className="page-nav__day page-nav__day_next"
-        onClick={() => handleChangeWeek(1)}
-        aria-label="Следующая неделя"
-        title="Следующая неделя"
+        onClick={() => handleShiftWindow(1)}
+        aria-label="Следующие 7 дней"
+        title="Следующие 7 дней"
       />
     </nav>
   );

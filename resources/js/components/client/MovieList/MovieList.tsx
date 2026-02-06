@@ -38,7 +38,7 @@ export const MovieList: React.FC = () => {
     });
     
     return (
-      <div className="movie-list-empty">
+      <div className="no-movies-message">
         <h3>На {formattedDate} сеансов нет</h3>
         <p>Выберите другую дату или проверьте расписание позже</p>
       </div>

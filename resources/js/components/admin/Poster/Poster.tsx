@@ -12,7 +12,7 @@ export const Poster: React.FC<PosterProps> = ({
   alt,
   className = ''
 }) => {
-  const { handlePosterError, getPosterSrc } = usePoster('/storage/posters/defaultPoster.png');
+  const { handlePosterError, getPosterSrc } = usePoster('/img/admin/defaultPoster.png');
 
   return (
     <img

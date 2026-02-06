@@ -70,7 +70,7 @@ export const Popup: React.FC<PopupProps> = ({
                 href="#"
                 onClick={handleClose}
               >
-                <img src="/storage/admin/close.png" alt="Закрыть" />
+                <img src="/img/admin/close.png" alt="Закрыть" />
               </a>
             </h2>
           </div>

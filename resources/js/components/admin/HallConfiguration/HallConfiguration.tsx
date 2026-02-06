@@ -1,130 +1,124 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { AdminHall, AdminSeat } from '../../../types/admin';
 import { ConfigSection } from '../ConfigSection/ConfigSection';
 import { ConfigButton } from '../ConfigButton/ConfigButton';
+import { useDraftState } from '../../../hooks/useDraftState';
 import './HallConfiguration.css';
 
-interface HallConfigurationProps {
+type HallConfigDraft = {
+  rows: number;
+  seatsPerRow: number;
+  layout: AdminSeat[][];
+};
+
+type SeatType = 'standard' | 'vip' | 'disabled';
+
+interface Props {
   isOpen: boolean;
   onToggle: () => void;
   halls: AdminHall[];
   onConfigurationSaved: (hallId: string) => void;
 }
 
-type AdminSeatType = 'standard' | 'vip' | 'disabled';
-
-export const HallConfiguration: React.FC<HallConfigurationProps> = ({
+export const HallConfiguration: React.FC<Props> = ({
   isOpen,
   onToggle,
   halls,
   onConfigurationSaved,
 }) => {
-  const [selectedHallId, setSelectedHallId] = useState<string>('');
-  const [rows, setRows] = useState<number>(0);
-  const [seatsPerRow, setSeatsPerRow] = useState<number>(0);
-  const [layout, setLayout] = useState<AdminSeat[][]>([]);
+  const [selectedHallId, setSelectedHallId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSaved, setIsSaved] = useState(false);
 
-  // Выбор первого зала по умолчанию
+  const {
+    draft,
+    setDraft,
+    reset,
+    commit,
+    isDirty,
+  } = useDraftState<HallConfigDraft>();
+
+  // выбор первого зала
   useEffect(() => {
     if (!selectedHallId && halls.length > 0) {
       setSelectedHallId(halls[0].id);
     }
   }, [halls, selectedHallId]);
 
-  // Загрузка конфигурации выбранного зала
+  // загрузка конфига зала → baseline + draft
   useEffect(() => {
-    if (!selectedHallId) {
-      setRows(0);
-      setSeatsPerRow(0);
-      setLayout([]);
-      return;
-    }
-
     const hall = halls.find(h => h.id === selectedHallId);
     if (!hall) return;
 
-    setRows(hall.rows || 0);
-    setSeatsPerRow(hall.seatsPerRow || 0);
-    setLayout(hall.layout || []);
+    const config: HallConfigDraft = {
+      rows: hall.rows || 0,
+      seatsPerRow: hall.seatsPerRow || 0,
+      layout: hall.layout || [],
+    };
+
+    commit(config);
   }, [selectedHallId, halls]);
 
-  // Пересчёт сетки при изменении размеров
+  // пересчёт сетки
   useEffect(() => {
+    if (!draft) return;
+    const { rows, seatsPerRow, layout } = draft;
+
     if (rows < 1 || seatsPerRow < 1) {
-      setLayout([]);
+      setDraft({ ...draft, layout: [] });
       return;
     }
 
-    setLayout(prev => {
-      const newLayout: AdminSeat[][] = [];
+    const newLayout: AdminSeat[][] = [];
 
-      for (let r = 0; r < rows; r++) {
-        const row: AdminSeat[] = [];
-
-        for (let s = 0; s < seatsPerRow; s++) {
-          const oldSeat = prev[r]?.[s];
-
-          row.push({
+    for (let r = 0; r < rows; r++) {
+      const row: AdminSeat[] = [];
+      for (let s = 0; s < seatsPerRow; s++) {
+        row.push(
+          layout[r]?.[s] ?? {
             row: r + 1,
             seat: s + 1,
-            type: oldSeat?.type || 'standard',
-          });
-        }
-
-        newLayout.push(row);
+            type: 'standard',
+          }
+        );
       }
-
-      return newLayout;
-    });
-  }, [rows, seatsPerRow]);
-
-  // Работа с креслами
-  const nextSeatType = (type: AdminSeatType): AdminSeatType => {
-    if (type === 'standard') return 'vip';
-    if (type === 'vip') return 'disabled';
-    return 'standard';
-  };
-
-  const handleSeatClick = (rowIndex: number, seatIndex: number) => {
-    setLayout(prev => {
-      const copy = prev.map(row => row.map(seat => ({ ...seat })));
-      copy[rowIndex][seatIndex].type = nextSeatType(copy[rowIndex][seatIndex].type);
-      return copy;
-    });
-  };
-
-  // Сохранение
-  const handleSave = async () => {
-    if (!selectedHallId) return;
-
-    if (rows < 1 || seatsPerRow < 1) {
-      setError('Укажите количество рядов и мест (минимум 1)');
-      return;
+      newLayout.push(row);
     }
+
+    setDraft({ ...draft, layout: newLayout });
+  }, [draft?.rows, draft?.seatsPerRow]);
+
+  const nextType = (t: SeatType): SeatType =>
+    t === 'standard' ? 'vip' : t === 'vip' ? 'disabled' : 'standard';
+
+  const handleSeatClick = (r: number, s: number) => {
+    if (!draft) return;
+    const copy = draft.layout.map(row => row.map(seat => ({ ...seat })));
+    copy[r][s].type = nextType(copy[r][s].type);
+    setDraft({ ...draft, layout: copy });
+  };
+
+  const handleSave = async () => {
+    if (!draft || !selectedHallId) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
       await axios.put(`/api/halls/${selectedHallId}`, {
-        rows,
-        seats_per_row: seatsPerRow,
-        layout,
+        rows: draft.rows,
+        seats_per_row: draft.seatsPerRow,
+        layout: draft.layout,
       });
 
+      commit();
       onConfigurationSaved(selectedHallId);
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 3000);
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        'Ошибка сохранения конфигурации'
-      );
+    } catch {
+      setError('Ошибка сохранения конфигурации');
     } finally {
       setIsLoading(false);
     }
@@ -137,89 +131,107 @@ export const HallConfiguration: React.FC<HallConfigurationProps> = ({
       onToggle={onToggle}
       wrapperClassName={isSaved ? 'conf-step__wrapper__save-status' : ''}
     >
+
       {error && (
-        <div className="error-message" style={{ color: '#ff0000' }}>
+        <div style={{ color: 'red', marginBottom: 10 }}>
           {error}
-          <button onClick={() => setError(null)} style={{ marginLeft: 10 }}>×</button>
         </div>
       )}
 
-      <p className="conf-step__paragraph">Выберите зал для конфигурации:</p>
+      <p className="conf-step__paragraph">
+        Выберите зал для конфигурации:
+      </p>
 
       <ul className="conf-step__selectors-box">
-        {halls.map(hall => (
-          <li key={hall.id}>
+        {halls.map(h => (
+          <li key={h.id}>
             <input
               type="radio"
               className="conf-step__radio"
               name="chairs-hall"
-              checked={selectedHallId === hall.id}
-              onChange={() => setSelectedHallId(hall.id)}
+              checked={selectedHallId === h.id}
+              onChange={() => setSelectedHallId(h.id)}
             />
             <span
               className="conf-step__selector"
-              onClick={() => setSelectedHallId(hall.id)}
+              onClick={() => setSelectedHallId(h.id)}
             >
-              {hall.name}
+              {h.name}
             </span>
           </li>
         ))}
       </ul>
 
-      {selectedHallId && (
+      {draft && (
         <>
           <p className="conf-step__paragraph">
-            Укажите количество рядов и мест в ряду:
+            Укажите количество рядов и максимальное количество кресел в ряду:
           </p>
 
           <div className="conf-step__legend">
             <label className="conf-step__label">
-              Рядов
+              Рядов, шт
               <input
                 type="number"
                 className="conf-step__input"
-                min={1}
-                max={20}
-                value={rows}
-                onChange={e => setRows(Number(e.target.value))}
+                value={draft.rows}
+                onChange={e =>
+                  setDraft({ ...draft, rows: Number(e.target.value) })
+                }
               />
             </label>
 
-            <span className="multiplier">×</span>
+            <span className="multiplier">x</span>
 
             <label className="conf-step__label">
-              Мест в ряду
+              Мест, шт
               <input
                 type="number"
                 className="conf-step__input"
-                min={1}
-                max={20}
-                value={seatsPerRow}
-                onChange={e => setSeatsPerRow(Number(e.target.value))}
+                value={draft.seatsPerRow}
+                onChange={e =>
+                  setDraft({
+                    ...draft,
+                    seatsPerRow: Number(e.target.value),
+                  })
+                }
               />
             </label>
           </div>
 
           <p className="conf-step__paragraph">
-            Нажмите на кресло, чтобы изменить его тип:
+            Теперь вы можете указать типы кресел на схеме зала:
           </p>
 
           <div className="conf-step__legend">
-            <span className="conf-step__chair conf-step__chair_standard"></span> — обычные
-            <span className="conf-step__chair conf-step__chair_vip"></span> — VIP
-            <span className="conf-step__chair conf-step__chair_disabled"></span> — заблокированные
+            <div className="conf-step__legend-items">
+              <div className="conf-step__legend-item">
+                <span className="conf-step__chair conf-step__chair_standard"></span>
+                — обычные кресла
+              </div>
+              <div className="conf-step__legend-item">
+                <span className="conf-step__chair conf-step__chair_vip"></span>
+                — VIP кресла
+              </div>
+              <div className="conf-step__legend-item">
+                <span className="conf-step__chair conf-step__chair_disabled"></span>
+                — заблокированные (нет кресла)
+              </div>
+            </div>
+            <p className="conf-step__hint">
+              Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши
+            </p>
           </div>
 
           <div className="conf-step__hall">
             <div className="conf-step__hall-wrapper">
-              {layout.map((row, rowIndex) => (
-                <div key={rowIndex} className="conf-step__row">
-                  {row.map((seat, seatIndex) => (
+              {draft.layout.map((row, r) => (
+                <div key={r} className="conf-step__row">
+                  {row.map((seat, s) => (
                     <span
-                      key={seatIndex}
+                      key={s}
                       className={`conf-step__chair conf-step__chair_${seat.type}`}
-                      onClick={() => handleSeatClick(rowIndex, seatIndex)}
-                      title={`Ряд ${seat.row}, Место ${seat.seat}`}
+                      onClick={() => handleSeatClick(r, s)}
                     />
                   ))}
                 </div>
@@ -227,25 +239,26 @@ export const HallConfiguration: React.FC<HallConfigurationProps> = ({
             </div>
           </div>
 
-          <div className="conf-step__buttons text-center">
+          <fieldset className="conf-step__buttons text-center">
             <ConfigButton
               variant="regular"
-              disabled={isLoading}
-              onClick={() => setSelectedHallId(halls[0]?.id || '')}
+              disabled={!isDirty || isLoading}
+              onClick={reset}
             >
               Отмена
             </ConfigButton>
 
             <ConfigButton
               variant="accent"
-              disabled={isLoading || rows < 1 || seatsPerRow < 1}
+              disabled={!isDirty || isLoading}
               onClick={handleSave}
             >
-              {isLoading ? 'Сохранение…' : 'Сохранить'}
+              Сохранить
             </ConfigButton>
-          </div>
+          </fieldset>
         </>
       )}
+
     </ConfigSection>
   );
 };

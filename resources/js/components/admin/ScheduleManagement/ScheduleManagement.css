@@ -59,6 +59,14 @@
   background-color: #ffa285;
 }
 
+.conf-step__movies .conf-step__movie-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 50px;
+}
+
 .conf-step__movies .conf-step__movie-title {
   font-weight: 500;
   font-size: 1.4rem;
@@ -72,12 +80,6 @@
 .conf-step__movie>a {
   position: absolute;
   bottom: 5px;
-  right: 5px;
-}
-
-.conf-step__movie-delete {
-  position: absolute;
-  top: 5px;
   right: 5px;
 }
 

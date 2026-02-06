@@ -5,6 +5,7 @@ import { ConfigSection } from '../ConfigSection/ConfigSection';
 import { ConfigButton } from '../ConfigButton/ConfigButton';
 import { Popup } from '../Popup/Popup';
 import { DeleteForm } from '../DeleteForm/DeleteForm';
+import './HallManagement.css';
 
 interface HallManagementProps {
   isOpen: boolean;
@@ -111,6 +112,7 @@ export const HallManagement: React.FC<HallManagementProps> = ({
           <button onClick={() => setError(null)} style={{ marginLeft: '10px' }}>×</button>
         </div>
       )}
+      <p className="conf-step__paragraph">Доступные залы:</p>
 
       {halls.length > 0 ? (
         <ul className="conf-step__list">

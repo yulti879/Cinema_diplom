@@ -56,14 +56,13 @@ class ScreeningController extends Controller
         $movie = Movie::findOrFail($data['movie_id']);
 
         /**
-         * Новый сеанс:
-         * сначала дата, затем аккуратно выставляем время
+         * Новый сеанс:         
          */
         $newStart = Carbon::parse($data['date'])
             ->setTimeFromTimeString($data['start_time']);
 
-        $newEnd = (clone $newStart)
-            ->addMinutes($movie->duration);
+        $newEnd = $newStart->copy()
+            ->addMinutes($movie->durationInMinutes());
 
         /**
          * Нельзя создавать сеанс в прошлом
@@ -86,10 +85,9 @@ class ScreeningController extends Controller
             $existingStart = Carbon::parse($screening->date)
                 ->setTimeFromTimeString($screening->start_time);
 
-            $existingEnd = (clone $existingStart)
-                ->addMinutes($screening->movie->duration);
+            $existingEnd = $existingStart->copy()
+                ->addMinutes($screening->movie->durationInMinutes());
 
-            // Проверка пересечения
             if ($newStart < $existingEnd && $newEnd > $existingStart) {
                 return response()->json([
                     'message' => 'В этом зале уже есть сеанс, пересекающийся по времени',

@@ -10,12 +10,15 @@ class Movie extends Model
         'title',
         'poster_url',
         'synopsis',
-        'duration',
-        'origin'
+        'duration', // МИНУТЫ
+        'origin',
     ];
-    
-    public function screenings()
+
+    /**
+     * Длительность фильма в минутах
+     */
+    public function durationInMinutes(): int
     {
-        return $this->hasMany(Screening::class);
+        return (int) $this->duration;
     }
 }

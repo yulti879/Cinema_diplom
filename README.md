@@ -40,9 +40,8 @@ npm install
 
 ### 3. Настройка окружения
 
-copy .env.example .env (для Windows)
-или
-cp .env.example .env (для Linux/MacOS)
+Windows: copy .env.example .env
+Linux/MacOS: cp .env.example .env
 
 По умолчанию используется SQLite: database/database.sqlite
 
@@ -62,13 +61,35 @@ php artisan migrate
 php artisan migrate:fresh
 
 
-### 6. Запуск сервера
+### 6. Создание симлинка для storage
 
-php artisan serve
-npm run dev
+Файлы (постеры фильмов) загружаются через Laravel Filesystem (disk: public)
+и физически хранятся в `storage/app/public`.
+
+Для корректной работы загрузки постеров и других файлов необходимо создать
+символическую ссылку из `public/storage` в `storage/app/public`:
+
+php artisan storage:link
+
+(без этого шага загруженные изображения не будут отображаться, несмотря на успешную загрузку).
 
 
-Frontend будет доступен по умолчанию на http://localhost:5173
+### 7. Запуск сервера
+
+**Режим разработки:**
+
+1. Запустите оба сервера в разных терминалах:
+
+Backend: php artisan serve
+
+Frontend:
+
+в режиме разработки: npm run dev
+
+в режиме продакшена: npm run build
+
+2. Откройте приложение в браузере: http://localhost:8000
+
 
 
 ## Пользователи и роли
